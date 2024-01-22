@@ -42,7 +42,7 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
                 <div class="col-sm-auto">
                     <NumberInput
                         get=initial_value set=set_initial_value on_change=update_buckets_callback
-                        label="Initial value" min=0.1 step=0.1 />
+                        label="Initial value" min=0.0 step=0.1 />
                 </div>
                 <div class="col-sm-auto">
                     <NumberInput
