@@ -39,7 +39,7 @@ jobs:
 
       - uses: cargo-bins/cargo-binstall@main
       - name: Download and install Trunk binary
-        run: cargo binstall trunk
+        run: cargo binstall --no-confirm trunk
 
       - name: Build release with Trunk
         run: trunk build --release
