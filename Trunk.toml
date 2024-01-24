@@ -1,0 +1,10 @@
+[build]
+target = "./crates/web-ui/index.html"
+
+[watch]
+ignore = ["./crates/tauri"]
+
+[serve]
+address = "127.0.0.1"
+port = 8080
+open = false
