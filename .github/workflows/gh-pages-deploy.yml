@@ -54,7 +54,7 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with:
           # Upload dist dir
-          path: './dist'
+          path: './crates/web-ui/dist'
 
       - name: Deploy to GitHub Pages 🚀
         id: deployment
