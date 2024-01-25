@@ -35,6 +35,7 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: nightly
+          targets: wasm32-unknown-unknown
           components: clippy
 
       # we need trunk to build UI which is used in tauri`build.rs`
