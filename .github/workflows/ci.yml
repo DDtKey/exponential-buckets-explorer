@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
+      - name: Install necessary dependencies
+        run: sudo apt-get install libgtk-3-dev
       - name: Install nightly rust
         uses: dtolnay/rust-toolchain@master
         with:
@@ -39,6 +41,8 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
+      - name: Install necessary dependencies
+        run: sudo apt-get install libgtk-3-dev
       - name: Install nightly rust
         uses: dtolnay/rust-toolchain@master
         with:
