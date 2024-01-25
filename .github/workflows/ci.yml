@@ -36,6 +36,14 @@ jobs:
         with:
           toolchain: nightly
           components: clippy
+
+      # we need trunk to build UI which is used in tauri`build.rs`
+      - uses: cargo-bins/cargo-binstall@main
+      - name: Download and install Trunk binary
+        run: cargo binstall --no-confirm trunk
+      - name: Build with Trunk
+        run: trunk build
+
       - name: Clippy check
         uses: actions-rs/clippy-check@v1
         with:
