@@ -22,11 +22,29 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
+      - name: Tauri dependencies
+        run: >-
+          sudo apt-get update &&
+          sudo apt-get install -y
+          libgtk-3-dev
+          libayatana-appindicator3-dev
+          libwebkit2gtk-4.0-dev
+          webkit2gtk-driver
+          xvfb
       - name: Install nightly rust
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: nightly
+          targets: wasm32-unknown-unknown
           components: clippy
+
+      # we need trunk to build UI which is used in tauri`build.rs`
+      - uses: cargo-bins/cargo-binstall@main
+      - name: Download and install Trunk binary
+        run: cargo binstall --no-confirm trunk
+      - name: Build with Trunk
+        run: trunk build
+
       - name: Clippy check
         uses: actions-rs/clippy-check@v1
         with:

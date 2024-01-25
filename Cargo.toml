@@ -2,9 +2,17 @@
 resolver = "2"
 members = [
     "crates/web-ui",
-#    "crates/tauri"
+    "crates/tauri"
 ]
 
 [workspace.package]
 edition = "2021"
 rust-version = "1.75"
+
+[profile.release]
+lto = true
+
+[profile.release.package.exponential-buckets-explorer-web-ui]
+# `s` gives better result than `z` size (at the moment of comparing)
+opt-level = "s"
+codegen-units = 1
