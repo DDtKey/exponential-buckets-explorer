@@ -13,7 +13,7 @@ log = { version = "0.4"}
 leptos = { version = "0.5.7", features = ["csr"] }
 leptos_router = {  version = "0.5.7", features = ["csr"] }
 leptos-use = { version = "0.9.0", git = "https://github.com/synphonyte/leptos-use", rev = "67fa44a5acc8a228350820fd612e2d25a7fb64a8" }
-chart-js-rs = { version = "0.0.13" }
+chart-js-rs = { version = "0.0.13" , git = "https://github.com/DDtKey/chart-js-rs.git", branch = "support-chart-updates"}
 
 
 [features]

@@ -355,8 +355,7 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 [[package]]
 name = "chart-js-rs"
 version = "0.0.13"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e82ca91d6554ad88a72c9464716a631f60a95635c9aa729c14c271ada0c367d7"
+source = "git+https://github.com/DDtKey/chart-js-rs.git?branch=support-chart-updates#a78e549c131783eaa8833b1b38dd4ab8c63e7186"
 dependencies = [
  "gloo-utils 0.2.0",
  "js-sys",
