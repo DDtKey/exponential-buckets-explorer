@@ -53,7 +53,7 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
 
     view! {
         <div class="container mt-4">
-            <h1 class="mb-4">Exponential Buckets Calculator</h1>
+            <h1 class="mb-4">Exponential Buckets Explorer</h1>
 
             {/* Input Parameters Form */}
             <div class="row mb-4">
