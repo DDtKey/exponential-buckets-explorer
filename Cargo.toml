@@ -2,7 +2,7 @@
 resolver = "2"
 members = [
     "crates/web-ui",
-#    "crates/tauri"
+    "crates/tauri"
 ]
 
 [workspace.package]
