@@ -10,13 +10,25 @@ pub(crate) struct Bucket {
 }
 
 impl Buckets {
-    pub fn calculate(initial_value: f64, factor: f64, num_of_buckets: u32) -> Self {
-        let mut buckets = Vec::with_capacity(num_of_buckets as usize);
+    pub(crate) fn calculate(initial_value: f64, factor: f64, num_of_buckets: u32) -> Self {
+        // Overflow isn't possible due to validations, but this api is isolated
+        // TODO: use bounded integer type to restrict passing too large values
+        let capacity = num_of_buckets
+            .checked_add(1)
+            .expect("number of buckets - overflow");
+
+        let mut buckets = Vec::with_capacity(capacity as usize);
+        buckets.push(Bucket::new(1, 0.0..initial_value));
+
         let mut current_value = initial_value;
-        for i in 1..num_of_buckets {
-            let next_value = current_value * factor;
-            buckets.push(Bucket::new(i, current_value..next_value));
-            current_value = next_value;
+
+        // starting from second bucket, since first one is already added
+        if num_of_buckets > 2 {
+            for bucket_num in 2..num_of_buckets {
+                let next_value = current_value * factor;
+                buckets.push(Bucket::new(bucket_num, current_value..next_value));
+                current_value = next_value;
+            }
         }
         // last bucket is open ended
         buckets.push(Bucket::new(num_of_buckets, current_value..f64::INFINITY));
