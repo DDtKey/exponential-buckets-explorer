@@ -1,26 +1,32 @@
 use leptos::ev::Event;
 use leptos::{
     component, event_target_value, view, Callable, Callback, CollectView, IntoView, ReadSignal,
-    SignalGet, SignalSet, WriteSignal,
+    SignalSet, SignalWith, WriteSignal,
 };
-use std::fmt::Debug;
+use std::fmt::Display;
+use std::str::FromStr;
 
-#[derive(Debug, Clone)]
-pub(crate) struct SelectOption {
-    pub(crate) value: String,
-    pub(crate) label: String,
+pub(crate) trait SelectOption {
+    fn label(&self) -> &'static str;
 }
 
 #[component]
-pub(crate) fn SelectInput(
-    #[prop(into)] get: ReadSignal<String>,
-    #[prop(into)] set: WriteSignal<String>,
-    #[prop(into)] options: Vec<SelectOption>,
+pub(crate) fn SelectInput<T>(
+    #[prop(into)] get: ReadSignal<T>,
+    #[prop(into)] set: WriteSignal<T>,
+    #[prop(into)] options: Vec<T>,
     #[prop(into, optional)] on_change: Option<Callback<Event>>,
     #[prop(into)] label: String,
-) -> impl IntoView {
+) -> impl IntoView
+where
+    T: SelectOption + Display + PartialEq + FromStr + Copy + 'static,
+{
     let on_change = move |ev| {
-        let new_value = event_target_value(&ev);
+        let Ok(new_value) = event_target_value(&ev).parse::<T>() else {
+            // impossible until somebody changes selector in their browser or wrong impl of `T: FromStr`
+            log::debug!("[select-input] failed to parse value");
+            return;
+        };
         log::debug!("[select-input] new value is: {new_value}");
 
         set.set(new_value);
@@ -32,11 +38,10 @@ pub(crate) fn SelectInput(
     let options_view = options
         .into_iter()
         .map(|option| {
-            let value = option.value.clone();
-            let is_selected = move || get.get() == value;
+            let is_selected = move || get.with(|v| v == &option);
             view! {
-                <option value=option.value selected=is_selected>
-                  { option.label }
+                <option value=option.to_string() selected=is_selected>
+                  { option.label() }
                 </option>
             }
         })

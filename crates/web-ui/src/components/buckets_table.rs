@@ -1,25 +1,31 @@
 use crate::types::buckets::Buckets;
-use leptos::{component, view, CollectView, IntoView, ReadSignal, SignalGet, SignalWith};
-use leptos_use::{use_intl_number_format, Notation, NumberStyle, UseIntlNumberFormatOptions};
+use crate::types::units::Unit;
+use leptos::{
+    component, view, CollectView, IntoView, ReadSignal, SignalGet, SignalGetUntracked, SignalWith,
+};
+use leptos_use::{use_intl_number_format, Notation, UseIntlNumberFormatOptions};
+use std::time::Duration;
+use ubyte::ToByteUnit;
 
 #[component]
-pub(crate) fn BucketsTable(
-    buckets: ReadSignal<Buckets>,
-    unit: ReadSignal<String>,
-) -> impl IntoView {
-    let rounded_float_format = move || {
-        let unit = Some(unit.get()).filter(|v| !v.is_empty() && v != "a");
-        let mut options = UseIntlNumberFormatOptions::default()
+pub(crate) fn BucketsTable(buckets: ReadSignal<Buckets>, unit: ReadSignal<Unit>) -> impl IntoView {
+    let intl_float_format = use_intl_number_format(
+        UseIntlNumberFormatOptions::default()
+            .notation(Notation::Compact)
             .minimum_fraction_digits(1)
-            .maximum_fraction_digits(3);
+            .maximum_fraction_digits(3),
+    );
 
-        if let Some(unit) = unit {
-            options = options.style(NumberStyle::Unit).unit(unit);
-        } else {
-            options = options.notation(Notation::Compact);
+    let rounded_float_format = move |val: f64| {
+        if val.is_infinite() {
+            return "∞".to_string();
         }
 
-        use_intl_number_format(options)
+        match unit.get() {
+            Unit::Number => intl_float_format.format(val).get_untracked(),
+            Unit::Bytes => (val.round() as u64).bytes().to_string(),
+            Unit::Seconds => humantime::format_duration(Duration::from_secs_f64(val)).to_string(),
+        }
     };
 
     let buckets_view = move || {
@@ -30,7 +36,7 @@ pub(crate) fn BucketsTable(
                     view! {
                         <tr>
                             <th class="text-start" scope="row">{bucket.number()}</th>
-                            <td class="text-start" scope="col" title={bucket.le()}>{rounded_float_format().format(bucket.le())}</td>
+                            <td class="text-start" scope="col" title={bucket.le()}>{rounded_float_format(bucket.le())}</td>
                         </tr>
                     }
                 })
