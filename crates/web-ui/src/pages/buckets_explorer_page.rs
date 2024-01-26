@@ -1,7 +1,7 @@
 use crate::components::buckets_chart::BucketsChart;
 use crate::components::buckets_table::BucketsTable;
-use crate::components::input::NumberInput;
-use crate::types::Buckets;
+use crate::components::input::{NumberInput, SelectInput, SelectOption};
+use crate::types::buckets::Buckets;
 use leptos::{component, create_signal, view, IntoView, SignalGet, SignalGetUntracked, SignalSet};
 use leptos_router::use_query;
 use leptos_router::Params;
@@ -31,6 +31,7 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
     let (factor, set_factor) = create_signal(query.factor.unwrap_or(DEFAULT_FACTOR));
     let (buckets_num, set_buckets_num) =
         create_signal(query.buckets_num.unwrap_or(DEFAULT_BUCKETS_NUM));
+    let (unit, set_unit) = create_signal("a".to_string());
 
     let (buckets, set_buckets) = create_signal(Buckets::calculate(
         initial_value.get_untracked(),
@@ -45,6 +46,21 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
             buckets_num.get(),
         ))
     };
+
+    let options = vec![
+        SelectOption {
+            value: "".to_string(),
+            label: "-".to_string(),
+        },
+        SelectOption {
+            value: "byte".to_string(),
+            label: "Byte".to_string(),
+        },
+        SelectOption {
+            value: "millisecond".to_string(),
+            label: "Millisecond".to_string(),
+        },
+    ];
 
     view! {
         <div class="container mt-4">
@@ -67,6 +83,12 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
                         get=buckets_num set=set_buckets_num on_change=update_buckets_callback
                         label="Number of buckets" min=1_u32 max=100_u32 />
                 </div>
+                <div class="col-md-3 col-sm-auto">
+                    <SelectInput
+                        get=unit set=set_unit options=options
+                        on_change=update_buckets_callback
+                        label="Unit" />
+                </div>
             </div>
 
             <div class="mb-4 row">
@@ -74,7 +96,7 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
                 <div class="col-md-3 col-sm-auto text-center">
                     <h2>Buckets</h2>
 
-                    <BucketsTable buckets=buckets />
+                    <BucketsTable buckets=buckets unit=unit />
                 </div>
                 {/* Chart */}
                 <div class="col-md-6 col-sm-auto text-center">

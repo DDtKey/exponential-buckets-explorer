@@ -1,4 +1,4 @@
-use crate::types::Buckets;
+use crate::types::buckets::Buckets;
 use chart_js_rs::scatter::Scatter;
 use chart_js_rs::{
     ChartOptions, ChartScale, Dataset, DatasetDataExt, NoAnnotations, XYDataset, XYPoint,

@@ -30,7 +30,7 @@ where
         let result = T::from_str(&event_target_value(&ev))
             .map_err(|err| err.to_string())
             .and_then(|value| validate_value(value, min, max));
-        log::debug!("parsed result of `on_change`: {:?}", result);
+        log::debug!("[number-input] parsed result of `on_change`: {:?}", result);
 
         match result {
             Ok(new_value) => {
