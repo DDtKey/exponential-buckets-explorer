@@ -51,33 +51,33 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
             <h1 class="mb-4">Exponential Buckets Explorer</h1>
 
             {/* Input Parameters Form */}
-            <div class="row mb-4">
-                <div class="col-sm-auto">
+            <div class="row mb-4 align-items-end">
+                <div class="col-md-3 col-sm-auto">
                     <NumberInput
                         get=initial_value set=set_initial_value on_change=update_buckets_callback
                         label="Initial value" min=0.0 step=0.1 />
                 </div>
-                <div class="col-sm-auto">
+                <div class="col-md-3 col-sm-auto">
                     <NumberInput
                         get=factor set=set_factor on_change=update_buckets_callback
                         label="Factor" min=1.0 step=0.1 />
                 </div>
-                <div class="col-sm-auto">
+                <div class="col-md-3 col-sm-auto">
                     <NumberInput
                         get=buckets_num set=set_buckets_num on_change=update_buckets_callback
-                        label="Number of Buckets" min=1_u32 max=100_u32 />
+                        label="Number of buckets" min=1_u32 max=100_u32 />
                 </div>
             </div>
 
             <div class="mb-4 row">
                 {/* Bucket Distribution Table */}
-                <div class="col-sm-auto text-center">
+                <div class="col-md-3 col-sm-auto text-center">
                     <h2>Buckets</h2>
 
                     <BucketsTable buckets=buckets />
                 </div>
                 {/* Chart */}
-                <div class="col-sm-6 text-center">
+                <div class="col-md-6 col-sm-auto text-center">
                     <div>
                         <h2>Chart</h2>
 
