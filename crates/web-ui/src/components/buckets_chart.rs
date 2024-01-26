@@ -45,7 +45,7 @@ pub(crate) fn BucketsChart(buckets: ReadSignal<Buckets>) -> impl IntoView {
                             .iter()
                             .map(|b| XYPoint {
                                 x: b.number().into(),
-                                y: b.start().into(),
+                                y: b.le().into(),
                                 description: String::new(),
                             })
                             .collect::<Vec<_>>()

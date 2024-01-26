@@ -3,15 +3,7 @@ use leptos::{component, view, CollectView, IntoView, ReadSignal, SignalWith};
 use leptos_use::{use_intl_number_format, Notation, UseIntlNumberFormatOptions};
 
 #[component]
-pub(crate) fn BucketsTable(
-    buckets: ReadSignal<Buckets>,
-    #[prop(into)] headers: Vec<String>,
-) -> impl IntoView {
-    let head_columns = headers
-        .iter()
-        .map(|header| view! { <th class="text-start" scope="col">{header}</th> })
-        .collect_view();
-
+pub(crate) fn BucketsTable(buckets: ReadSignal<Buckets>) -> impl IntoView {
     let rounded_float_format = use_intl_number_format(
         UseIntlNumberFormatOptions::default()
             .notation(Notation::Compact)
@@ -27,8 +19,7 @@ pub(crate) fn BucketsTable(
                     view! {
                         <tr>
                             <td class="text-start" scope="col">{bucket.number()}</td>
-                            <td class="text-start" scope="col" title={bucket.start()}>{rounded_float_format.format(bucket.start())}</td>
-                            <td class="text-start" scope="col" title={bucket.end()}>{rounded_float_format.format(bucket.end())}</td>
+                            <td class="text-start" scope="col" title={bucket.le()}>{rounded_float_format.format(bucket.le())}</td>
                         </tr>
                     }
                 })
@@ -41,7 +32,8 @@ pub(crate) fn BucketsTable(
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        {head_columns}
+                        <th class="text-start" scope="col">#</th>
+                        <th class="text-start" scope="col">Less than or equal to</th>
                     </tr>
                 </thead>
                 {buckets_view}

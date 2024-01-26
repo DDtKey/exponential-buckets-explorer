@@ -46,11 +46,6 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
         ))
     };
 
-    let table_header = ["#", "From", "To (exclusive)"]
-        .iter()
-        .map(ToString::to_string)
-        .collect::<Vec<_>>();
-
     view! {
         <div class="container mt-4">
             <h1 class="mb-4">Exponential Buckets Explorer</h1>
@@ -76,10 +71,10 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
 
             <div class="mb-4 row">
                 {/* Bucket Distribution Table */}
-                <div class="col-sm-6 text-center">
-                    <h2>Bucket Distribution Table</h2>
+                <div class="col-sm-auto text-center">
+                    <h2>Buckets</h2>
 
-                    <BucketsTable buckets=buckets headers=table_header />
+                    <BucketsTable buckets=buckets />
                 </div>
                 {/* Chart */}
                 <div class="col-sm-6 text-center">
