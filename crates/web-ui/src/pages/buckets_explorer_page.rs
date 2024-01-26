@@ -51,7 +51,7 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
             <h1 class="mb-4">Exponential Buckets Explorer</h1>
 
             {/* Input Parameters Form */}
-            <div class="row mb-4 align-items-end">
+            <div class="row mb-4">
                 <div class="col-md-3 col-sm-auto">
                     <NumberInput
                         get=initial_value set=set_initial_value on_change=update_buckets_callback
