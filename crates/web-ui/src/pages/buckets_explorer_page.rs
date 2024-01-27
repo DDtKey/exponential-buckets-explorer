@@ -88,7 +88,7 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
                     <BucketsTable buckets=buckets unit=unit />
                 </div>
                 {/* Chart */}
-                <div class="col-md-6 col-sm-auto text-center">
+                <div class="col-md-9 col-sm-auto text-center">
                     <div>
                         <h2>Chart</h2>
 
