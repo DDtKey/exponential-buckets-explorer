@@ -27,9 +27,12 @@ where
         move || error.with(|e| e.as_ref().map(ToString::to_string).unwrap_or_default());
 
     let on_change = move |ev| {
-        let result = T::from_str(&event_target_value(&ev))
-            .map_err(|err| err.to_string())
+        let result = Some(event_target_value(&ev))
+            .filter(|v| !v.is_empty())
+            .ok_or_else(|| "Value is not a number".to_string())
+            .and_then(|v| T::from_str(&v).map_err(|err| err.to_string()))
             .and_then(|value| validate_value(value, min, max));
+
         log::debug!("[number-input] parsed result of `on_change`: {:?}", result);
 
         match result {
@@ -46,7 +49,7 @@ where
 
     view! {
         <label class="form-label">
-            {label}
+            <span>{label}</span>
             <input type="number" min=min max=max step=step class="form-control" class:is-invalid=is_wrong prop:value=get on:change=on_change />
             <div class="invalid-feedback" class:d-block=is_wrong >
                 { error_message }
