@@ -17,6 +17,9 @@ leptos_router = {  version = "0.5.7", features = ["csr"] }
 log = { version = "0.4"}
 ubyte = { version = "0.10.4" }
 strum = { version = "0.25.0", features = ["derive"] }
+url = { version = "2.5.0" }
+web-sys = {  version = "0.3.67", features = ["Clipboard", "Navigator"] }
+wasm-bindgen-futures = { version = "0.4.40" }
 
 [features]
 default = []

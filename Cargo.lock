@@ -892,6 +892,9 @@ dependencies = [
  "log",
  "strum",
  "ubyte",
+ "url",
+ "wasm-bindgen-futures",
+ "web-sys",
 ]
 
 [[package]]
