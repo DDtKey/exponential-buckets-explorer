@@ -17,6 +17,7 @@ struct BucketsQueryParams {
     initial_value: Option<f64>,
     factor: Option<f64>,
     buckets_num: Option<u32>,
+    unit: Option<Unit>,
 }
 
 #[component]
@@ -33,7 +34,7 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
     let (factor, set_factor) = create_signal(query.factor.unwrap_or(DEFAULT_FACTOR));
     let (buckets_num, set_buckets_num) =
         create_signal(query.buckets_num.unwrap_or(DEFAULT_BUCKETS_NUM));
-    let (unit, set_unit) = create_signal(Unit::Number);
+    let (unit, set_unit) = create_signal(query.unit.unwrap_or(Unit::Number));
 
     let (buckets, set_buckets) = create_signal(Buckets::calculate(
         initial_value.get_untracked(),
