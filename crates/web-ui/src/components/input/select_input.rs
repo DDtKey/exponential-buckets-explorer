@@ -1,7 +1,7 @@
 use leptos::ev::Event;
 use leptos::{
-    component, event_target_value, view, Callable, Callback, CollectView, IntoView, ReadSignal,
-    SignalSet, SignalWith, WriteSignal,
+    component, event_target_value, view, Callable, Callback, CollectView, IntoView, MaybeSignal,
+    SignalSetter, SignalWith,
 };
 use std::fmt::Display;
 use std::str::FromStr;
@@ -12,8 +12,8 @@ pub(crate) trait SelectOption {
 
 #[component]
 pub(crate) fn SelectInput<T>(
-    #[prop(into)] get: ReadSignal<T>,
-    #[prop(into)] set: WriteSignal<T>,
+    #[prop(into)] get: MaybeSignal<T>,
+    #[prop(into)] set: SignalSetter<Option<T>>,
     #[prop(into)] options: Vec<T>,
     #[prop(into, optional)] on_change: Option<Callback<Event>>,
     #[prop(into)] label: String,
@@ -29,7 +29,7 @@ where
         };
         log::debug!("[select-input] new value is: {new_value}");
 
-        set.set(new_value);
+        set.set(Some(new_value));
         if let Some(callback) = on_change {
             callback.call(ev);
         }

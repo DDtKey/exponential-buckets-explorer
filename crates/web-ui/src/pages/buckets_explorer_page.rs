@@ -3,38 +3,28 @@ use crate::components::buckets_table::BucketsTable;
 use crate::components::input::{NumberInput, SelectInput, SelectOption};
 use crate::types::buckets::Buckets;
 use crate::types::units::Unit;
-use leptos::{component, create_signal, view, IntoView, SignalGet, SignalGetUntracked, SignalSet};
-use leptos_router::use_query;
-use leptos_router::Params;
+use leptos::{
+    component, create_signal, view, IntoView, Signal, SignalGet, SignalGetUntracked, SignalSet,
+};
+use leptos_router::create_query_signal;
 use strum::IntoEnumIterator;
 
 const DEFAULT_INITIAL_VALUE: f64 = 1.0;
 const DEFAULT_FACTOR: f64 = 1.5;
 const DEFAULT_BUCKETS_NUM: u32 = 15;
 
-#[derive(leptos::Params, Default, Debug, Copy, Clone, PartialEq)]
-struct BucketsQueryParams {
-    initial_value: Option<f64>,
-    factor: Option<f64>,
-    buckets_num: Option<u32>,
-    unit: Option<Unit>,
-}
-
 #[component]
 pub(crate) fn BucketsExplorerPage() -> impl IntoView {
-    let query = use_query::<BucketsQueryParams>()
-        .get_untracked()
-        .unwrap_or_else(|e| {
-            log::debug!("Failed to parse query params: {e}, using default values instead");
-            Default::default()
-        });
+    let (initial_value, set_initial_value) = create_query_signal("initial_value");
+    let (factor, set_factor) = create_query_signal("factor");
+    let (buckets_num, set_buckets_num) = create_query_signal("buckets_num");
+    let (unit, set_unit) = create_query_signal("unit");
 
-    let (initial_value, set_initial_value) =
-        create_signal(query.initial_value.unwrap_or(DEFAULT_INITIAL_VALUE));
-    let (factor, set_factor) = create_signal(query.factor.unwrap_or(DEFAULT_FACTOR));
-    let (buckets_num, set_buckets_num) =
-        create_signal(query.buckets_num.unwrap_or(DEFAULT_BUCKETS_NUM));
-    let (unit, set_unit) = create_signal(query.unit.unwrap_or(Unit::Number));
+    // map optional query parameters to default values
+    let initial_value = Signal::from(move || initial_value.get().unwrap_or(DEFAULT_INITIAL_VALUE));
+    let factor = Signal::from(move || factor.get().unwrap_or(DEFAULT_FACTOR));
+    let buckets_num = Signal::from(move || buckets_num.get().unwrap_or(DEFAULT_BUCKETS_NUM));
+    let unit = Signal::from(move || unit.get().unwrap_or_default());
 
     let (buckets, set_buckets) = create_signal(Buckets::calculate(
         initial_value.get_untracked(),
