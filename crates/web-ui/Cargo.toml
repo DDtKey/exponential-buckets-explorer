@@ -11,12 +11,12 @@ chart-js-rs = { version = "0.0.13" , git = "https://github.com/DDtKey/chart-js-r
 console_error_panic_hook = { version = "0.1.7", optional = true }
 console_log = { version = "1", optional = true }
 humantime = { version = "2.1.0" }
-leptos = { version = "0.5.7", features = ["csr"] }
-leptos-use = { version = "0.9.0", git = "https://github.com/synphonyte/leptos-use", rev = "67fa44a5acc8a228350820fd612e2d25a7fb64a8" }
-leptos_router = {  version = "0.5.7", features = ["csr"] }
+leptos = { version = "0.6.5", features = ["csr"] }
+leptos-use = { version = "0.10.2"}
+leptos_router = {  version = "0.6.5", features = ["csr"] }
 log = { version = "0.4"}
 ubyte = { version = "0.10.4" }
-strum = { version = "0.25.0", features = ["derive"] }
+strum = { version = "0.26.1", features = ["derive"] }
 
 [features]
 default = []
