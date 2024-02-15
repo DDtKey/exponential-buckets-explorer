@@ -9,14 +9,14 @@ use leptos::{component, create_effect, view, IntoView, MaybeSignal, SignalWith};
 
 #[component]
 pub(crate) fn BucketsChart(#[prop(into)] buckets: MaybeSignal<Buckets>) -> impl IntoView {
-    let id = "buckets-chart";
+    const ID: &str = "buckets-chart";
 
     // re-render chart on `buckets` change
     create_effect(move |_| {
         buckets.with(|buckets| {
             log::debug!("re-rendering buckets chart");
             let chart: Scatter<NoAnnotations> = Scatter {
-                id: id.to_string(),
+                id: ID.to_string(),
                 options: ChartOptions {
                     scales: Some(HashMap::from([
                         (
@@ -62,6 +62,6 @@ pub(crate) fn BucketsChart(#[prop(into)] buckets: MaybeSignal<Buckets>) -> impl 
     });
 
     view! {
-        <canvas id={id}></canvas>
+        <canvas id={ID}></canvas>
     }
 }
