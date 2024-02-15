@@ -2,15 +2,15 @@ use leptos::ev::Event;
 use leptos::wasm_bindgen::JsValue;
 use leptos::{
     component, create_signal, event_target_value, view, Callable, Callback, IntoAttribute,
-    IntoView, ReadSignal, SignalSet, SignalWith, WriteSignal,
+    IntoView, MaybeSignal, SignalSet, SignalSetter, SignalWith,
 };
 use std::fmt::{Debug, Display};
 use std::str::FromStr;
 
 #[component]
 pub(crate) fn NumberInput<T>(
-    #[prop(into)] get: ReadSignal<T>,
-    #[prop(into)] set: WriteSignal<T>,
+    #[prop(into)] get: MaybeSignal<T>,
+    #[prop(into)] set: SignalSetter<Option<T>>,
     #[prop(into, optional)] on_change: Option<Callback<Event>>,
     #[prop(into)] label: String,
     #[prop(optional)] min: Option<T>,
@@ -37,7 +37,7 @@ where
 
         match result {
             Ok(new_value) => {
-                set.set(new_value);
+                set.set(Some(new_value));
                 if let Some(callback) = on_change {
                     callback.call(ev);
                 }

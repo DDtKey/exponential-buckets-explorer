@@ -1,14 +1,17 @@
 use crate::types::buckets::Buckets;
 use crate::types::units::Unit;
 use leptos::{
-    component, view, CollectView, IntoView, ReadSignal, SignalGet, SignalGetUntracked, SignalWith,
+    component, view, CollectView, IntoView, MaybeSignal, SignalGet, SignalGetUntracked, SignalWith,
 };
 use leptos_use::{use_intl_number_format, Notation, UseIntlNumberFormatOptions};
 use std::time::Duration;
 use ubyte::ToByteUnit;
 
 #[component]
-pub(crate) fn BucketsTable(buckets: ReadSignal<Buckets>, unit: ReadSignal<Unit>) -> impl IntoView {
+pub(crate) fn BucketsTable(
+    #[prop(into)] buckets: MaybeSignal<Buckets>,
+    #[prop(into)] unit: MaybeSignal<Unit>,
+) -> impl IntoView {
     let intl_float_format = use_intl_number_format(
         UseIntlNumberFormatOptions::default()
             .notation(Notation::Compact)

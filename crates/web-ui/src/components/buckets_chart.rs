@@ -5,10 +5,10 @@ use chart_js_rs::{
 };
 use std::collections::HashMap;
 
-use leptos::{component, create_effect, view, IntoView, ReadSignal, SignalWith};
+use leptos::{component, create_effect, view, IntoView, MaybeSignal, SignalWith};
 
 #[component]
-pub(crate) fn BucketsChart(buckets: ReadSignal<Buckets>) -> impl IntoView {
+pub(crate) fn BucketsChart(#[prop(into)] buckets: MaybeSignal<Buckets>) -> impl IntoView {
     let id = "buckets-chart";
 
     // re-render chart on `buckets` change
