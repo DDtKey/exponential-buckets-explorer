@@ -4,7 +4,8 @@ use crate::components::input::{NumberInput, SelectInput, SelectOption};
 use crate::types::buckets::Buckets;
 use crate::types::units::Unit;
 use leptos::{
-    component, create_signal, view, IntoView, Signal, SignalGet, SignalGetUntracked, SignalSet,
+    component, create_signal, view, Effect, IntoView, Memo, SignalGet, SignalGetUntracked,
+    SignalSet,
 };
 use leptos_router::create_query_signal;
 use strum::IntoEnumIterator;
@@ -21,10 +22,10 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
     let (unit, set_unit) = create_query_signal("unit");
 
     // map optional query parameters to default values
-    let initial_value = Signal::from(move || initial_value.get().unwrap_or(DEFAULT_INITIAL_VALUE));
-    let factor = Signal::from(move || factor.get().unwrap_or(DEFAULT_FACTOR));
-    let buckets_num = Signal::from(move || buckets_num.get().unwrap_or(DEFAULT_BUCKETS_NUM));
-    let unit = Signal::from(move || unit.get().unwrap_or_default());
+    let initial_value = Memo::new(move |_| initial_value.get().unwrap_or(DEFAULT_INITIAL_VALUE));
+    let factor = Memo::new(move |_| factor.get().unwrap_or(DEFAULT_FACTOR));
+    let buckets_num = Memo::new(move |_| buckets_num.get().unwrap_or(DEFAULT_BUCKETS_NUM));
+    let unit = Memo::new(move |_| unit.get().unwrap_or_default());
 
     let (buckets, set_buckets) = create_signal(Buckets::calculate(
         initial_value.get_untracked(),
@@ -32,13 +33,13 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
         buckets_num.get_untracked(),
     ));
 
-    let update_buckets_callback = move |_| {
+    Effect::new(move |_| {
         set_buckets.set(Buckets::calculate(
             initial_value.get(),
             factor.get(),
             buckets_num.get(),
         ))
-    };
+    });
 
     let options: Vec<_> = Unit::iter().collect();
 
@@ -50,23 +51,22 @@ pub(crate) fn BucketsExplorerPage() -> impl IntoView {
             <div class="row mb-4">
                 <div class="col-md-3 col-sm-auto">
                     <NumberInput
-                        get=initial_value set=set_initial_value on_change=update_buckets_callback
+                        get=initial_value set=set_initial_value
                         label="Initial value" min=0.0 step=0.1 />
                 </div>
                 <div class="col-md-3 col-sm-auto">
                     <NumberInput
-                        get=factor set=set_factor on_change=update_buckets_callback
+                        get=factor set=set_factor
                         label="Factor" min=1.0 step=0.1 />
                 </div>
                 <div class="col-md-3 col-sm-auto">
                     <NumberInput
-                        get=buckets_num set=set_buckets_num on_change=update_buckets_callback
+                        get=buckets_num set=set_buckets_num
                         label="Number of buckets" min=1_u32 max=100_u32 />
                 </div>
                 <div class="col-md-3 col-sm-auto">
                     <SelectInput
                         get=unit set=set_unit options=options
-                        on_change=update_buckets_callback
                         label="Unit" />
                 </div>
             </div>
